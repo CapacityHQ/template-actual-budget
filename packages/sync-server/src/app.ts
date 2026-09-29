@@ -194,6 +194,19 @@ function sendServerStartedMessage() {
   );
 }
 
+// Capacity: stop accepting connections and finish the requests in flight when
+// the process is asked to stop. A rolling deploy sends SIGTERM to the previous
+// container once the new one is healthy, and SIGKILL 30 s later; without a
+// handler Node exits at once and the requests in flight at that instant fail.
+function drainOnSignal(server: { close: (callback?: () => void) => unknown }) {
+  for (const signal of ['SIGTERM', 'SIGINT'] as const) {
+    process.once(signal, () => {
+      setTimeout(() => process.exit(0), 20_000).unref();
+      server.close(() => process.exit(0));
+    });
+  }
+}
+
 export async function run() {
   const portVal = config.get('port');
   const port = typeof portVal === 'string' ? parseInt(portVal) : portVal;
@@ -223,12 +236,16 @@ export async function run() {
       key: parseHTTPSConfig(config.get('https.key')),
       cert: parseHTTPSConfig(config.get('https.cert')),
     };
-    https.createServer(httpsOptions, app).listen(port, hostname, () => {
-      sendServerStartedMessage();
-    });
+    drainOnSignal(
+      https.createServer(httpsOptions, app).listen(port, hostname, () => {
+        sendServerStartedMessage();
+      }),
+    );
   } else {
-    app.listen(port, hostname, () => {
-      sendServerStartedMessage();
-    });
+    drainOnSignal(
+      app.listen(port, hostname, () => {
+        sendServerStartedMessage();
+      }),
+    );
   }
 }

@@ -116,3 +116,8 @@ storybook-static
 .actualrc.yaml
 .actualrc.yml
 actual.config.js
+
+# Capacity Desktop generates .env from .env.example at project creation; never commit it
+.env
+.env.*
+!.env.example

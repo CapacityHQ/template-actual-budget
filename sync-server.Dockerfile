@@ -53,8 +53,10 @@ RUN cp -r ./packages/desktop-client/build ./node_modules/@actual-app/web/build
 
 FROM node:24-bookworm-slim AS prod
 
-# Minimal runtime dependencies
-RUN apt-get update && apt-get install -y tini && apt-get clean -y && rm -rf /var/lib/apt/lists/*
+# Minimal runtime dependencies. curl: Capacity's deploy pipeline (Coolify) probes
+# http://127.0.0.1:5006/health from inside the container with curl or wget, and
+# node:*-slim ships neither.
+RUN apt-get update && apt-get install -y tini curl && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 # Create a non-root user
 ARG USERNAME=actual

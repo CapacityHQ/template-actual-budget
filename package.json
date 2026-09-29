@@ -64,8 +64,7 @@
     "constraints": "yarn constraints",
     "typecheck": "tsgo -p tsconfig.root.json --noEmit && lage typecheck",
     "check:tsconfig-references": "workspaces-to-typescript-project-references --check",
-    "sync:tsconfig-references": "workspaces-to-typescript-project-references",
-    "prepare": "husky"
+    "sync:tsconfig-references": "workspaces-to-typescript-project-references"
   },
   "devDependencies": {
     "@monorepo-utils/workspaces-to-typescript-project-references": "^2.11.0",

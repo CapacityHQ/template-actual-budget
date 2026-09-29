@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "apps": [
+    {
+      "id": "actual",
+      "name": "Actual",
+      "primary": true,
+      "cwd": ".",
+      "command": "node .capacity/dev.mjs"
+    }
+  ],
+  "services": []
+}

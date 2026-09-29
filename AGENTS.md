@@ -1,5 +1,17 @@
 # AGENTS.md - Guide for AI Agents Working with Actual Budget
 
+> **Capacity Desktop.** This repository is `CapacityHQ/template-actual-budget`, Capacity's
+> curated fork of Actual, pinned at upstream v26.9.0. Capacity starts the app itself with
+> `node .capacity/dev.mjs` (the sync server in development mode on port 5006, proxying the
+> web client's Vite server on 3001: the same processes as `yarn start:server-dev`), so do not
+> start `yarn start*` yourself; edit the code and the running servers pick the change up.
+> Budget files and the server's database live under `packages/sync-server/user-files` and
+> `packages/sync-server/server-files` (gitignored), and the `ACTUAL_*` variables in `.env` at
+> the root reach the server. The production image is built from `sync-server.Dockerfile`.
+> The contributor policy below (the `[AI]` prefix, release notes under
+> `upcoming-release-notes/`, the git and PR rules) is upstream's; in this project the user's
+> own rules apply.
+
 This guide provides comprehensive information for AI agents (like Cursor) working with the Actual Budget codebase.
 
 ## Project Overview
